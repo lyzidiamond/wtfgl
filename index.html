@@ -1,0 +1,113 @@
+<!DOCTYPE html><html><head><title>WTFGL</title><meta charset='utf-8'><meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0' />
+<link href='big.css' rel='stylesheet' type='text/css' />
+<style>
+  .center {
+    text-align: center;
+  }
+  .quote {
+    font-family: serif;
+    letter-spacing: 2px;
+  }
+  .mindblown {
+    background-image: url(http://i.giphy.com/DqSw5gyRQ5yPC.gif);
+    background-repeat: repeat;
+  }
+  .width100 {
+    background-position: center;
+    background-size: 85%;
+  }
+</style>
+<script src='big.js'></script></head><body>
+
+<div><em>WTFGL:</em> a <strong>beginner's guide</strong> to the <em>future</em> of <strong>open source web mapping</strong></div>
+<div>Hi! I'm <em>Lyzi</em>. I work at <a href='https://mapbox.com/'>Mapbox</a>.</div>
+<div>This talk: <em>what</em> is GL? <em>How</em> did we get here? <em>Where</em> are we going? And <strong>most importantly</strong>, <em>why</em>?</div>
+<div>Let's start with the whole <em>how we got here</em> thing.</div>
+<div>So, <strong>pre-GL</strong> web maps.</div>
+<div>First, <em>1996</em>, there was <strong>MapQuest</strong>: the <em>pioneer</em>.</div>
+<div><img src='http://maptime.io/anatomy-of-a-web-map/images/3-map-history/2-Ridgefield-CT-Mapquest-out.jpg'></div>
+<div>No <em>panning</em>, no <strong>zooming</strong>, just full page refreshes.</div>
+<div>Then came the <strong>Googles</strong>, which introduced a <em>new standard</em> to web mapping:</div>
+<div>The map tile.<br><br><img src='./images/tiles.gif'></div>
+<div><strong>Map tiles</strong> project the world into a <em>square</em> (all hail <strong>web mercator</strong>) and increase (exponentially) the <em>number</em> of squares it takes to make up the <strong>whole world</strong> when the map is <em>zoomed in</em>.</div>
+<div>This makes the map <strong>faster</strong> and more <em>agile</em> -- instead of loading the <em>whole world</em> or <strong>giant images</strong>, the page loads <strong>tiny images</strong> only in the places you're looking.</div>
+<div>Tiling introduced <strong>standardization</strong> to interactive maps, which facilitated a <em>thriving ecosystem</em> of mapping tools.</div>
+<div>... including a little company called <em>Mapbox</em><br> and a little tool called <strong>TileMill</strong>.<br><br><img src='./images/tilemill-vertical.png'></div>
+<div><img src='./images/hero-tilemill@2x.png'><br><br><br><strong>TileMill</strong> was the first design tool from <em>Mapbox</em>. It was for creating map tiles.</div>
+<div>You <strong>loaded your vector data</strong> into TileMill, gave it some <em>styling rules</em> with CartoCSS, and <strong>exported</strong> the tileset of images as <em>mbtiles</em>.</div>
+<div>The <em>core</em> of this software was a little tool called <strong>Mapnik</strong>.</div>
+<div><img src='http://cliparts.co/cliparts/pc7/KrE/pc7KrEkEi.png'><br><br><br><strong>Mapnik</strong> is the monster that <em>eats data and stylesheets</em> and <strong>poops out map tiles</strong> with the <em>exact</em> right extents, at the <em>exact</em> right zoom levels, stored in the <em>exact</em> right structure.</div>
+<div data-bodyclass='center'><strong>Mapnik</strong> is magical. All hail <strong>Mapnik</strong>.<br><br><img src='http://i.giphy.com/MUeQeEQaDCjE4.gif'></div>
+<div>These <em>rendered tiles</em> were then <strong>stored</strong> on the server and <em>served</em> to the browser on request from a <strong>web mapping library</strong>.</div>
+<div>But <em>storing image tiles</em> on the server was <strong>limiting</strong>, especially in the face of <em>Retina screens</em> and the need to <strong>recreate tilesets</strong> frequently.</div>
+<div>So then came what we now call <em>Mapbox Studio Classic</em>, and with it a <strong>new paradigm</strong> for map tile creation.</div>
+<div>(Read: <em>vector tiles</em>.)</div>
+<div>Vector tiles separate <em>data storage</em> from <strong>map rendering</strong>.</div>
+<div>With the <em>raster tile</em> model, <strong>rendering</strong> was the core of the operation, as <em>images</em> were stored on the server and served to the browser. With <em>vector tiles</em>, <strong>rendering</strong> only needs to happen at the <em>very end</em> of the process.</div>
+<div><img src='https://cloud.githubusercontent.com/assets/2180540/6983490/89762a92-d9ec-11e4-80ff-d38c3d06f704.png'><br><br><br><strong>Mapbox Studio Classic</strong> was released as a <em>new</em> desktop design tool to <strong>replace</strong> TileMill, focusing on this <em>separated data/style paradigm</em>.</div>
+<div>When using <strong>TileMill</strong>, your <em>output</em> was a set of <em>map tiles</em>.</div>
+<div>From Mapbox Studio Classic, Mapbox <strong>stores</strong> your style and its associated vector tileset. When a <em>web map is created</em> using your style's ID and the <strong>browser requests tiles</strong>, the style and source are <em>passed to Mapnik</em> to render into map tiles <strong>ON THE FLY</strong>.</div>
+<div>You can even use <a href='https://mapbox.com/vector-tiles'>Mapbox-provided vector tilesets</a>!</div>
+<div data-bodyclass='mindblown'></div>
+<div>This made it <em>so much easier</em> to make basemaps.</div>
+<div>But <strong>that's just it</strong>, right? With <em>map tiles</em>, you're making <strong>basemaps</strong>. <em>Interactive</em> data is served <strong>separately</strong> as <em>GeoJSON</em>.</div>
+<div>This is <strong>limiting</strong>.</div>
+<div>To add <em>interactive data</em>, you needed to add an <strong>overlay</strong> using your <em>web mapping library</em> and <strong>GeoJSON</strong> data, and there are <em>limitations</em>...</div>
+<div><img src='http://i.onionstatic.com/clickhole/4693/16x9/960.jpg'></div>
+<div>Unless you enjoy <strong>crashing browsers</strong>, of course!</div>
+<div>So now that we <strong>separated</strong> <em>styles</em> from <em>sources</em> when implementing vector tiles, the two are <strong>independent</strong> of each other.</div>
+<div>Who says we need to keep using <em>Mapnik</em> to render <strong>image tiles</strong>? Why don't we just use a <strong>different renderer</strong> that better meets our mappy needs?</div>
+<div>So we did. And we called it <strong>Mapbox GL</strong>.</div>
+<div><strong>Mapbox GL</strong> is a way to render maps with <em>vectors</em> in the <em>browser</em> rather than as <em>images</em> on the <em>server</em>.</div>
+<div>Up until now, all <strong>rendering</strong> has been happening <em>server-side</em> with <strong>Mapnik</strong>. <em>Vector tiles</em> are combined with <strong>CartoCSS</strong> styles, fed to <em>Mapnik</em>, and <strong>raster tiles</strong> are created and <em>served</em> to the browser.</div>
+<div>With <strong>Mapbox GL</strong>, the rendering happens <em>in your browser</em> with the help of your device's <strong>graphics processing unit</strong>.</div>
+<div>This makes map loading <em>hella crazy stupid fast</em>. It also means you can do <strong>cool stuff</strong> like <em>rotating</em> and <strong>tilting</strong> the map, <em>smooth/infinite zooming</em>, and more!</div>
+<div>So in a <strong>practical</strong> sense, <em>how</em> does this work?</div>
+<div>Because maps are being rendered in the <em>browser</em> (or on a <em>device</em>), we have to give some <strong>guidance</strong> on <em>what</em> to draw and <em>how</em> to draw it.</div>
+<div>We do this by sending the browser a <strong>style</strong> written as <em>JSON</em> in the <a href='https://mapbox.com/mapbox-gl-style-spec'>Mapbox GL Style Specification</a>.</div>
+<div><img src='./images/style-spec.png'></div>
+<div>The style contains <strong>all</strong> the information needed to <em>draw your map</em>, including <strong>references to data</strong>, <strong>fonts</strong>, <strong>images</strong>, and, most importantly, <strong>styling rules</strong>.</div>
+<div>These <em>styling rules</em> are defined in the spec as <strong>layers</strong> -- <em>styled representations</em> of data in your map.</div>
+<div><img src='./images/gl-stylesheet.png'></div>
+<div>So what does <a href='https://www.mapbox.com/mapbox-studio'>Mapbox Studio</a> do? It is a <strong>visual interface</strong> for creating GL styles.</div>
+<div>And <a href='https://www.mapbox.com/mapbox-gl-js'>Mapbox GL JS</a>? A <em>rendering library</em> that takes that style object, combines those <strong> vector tiles</strong> and <em>style rules</em> to render them on the page with the help of your GPU.</div>
+<div>Yay! That's how GL works! Here are some puppies!</div>
+<div data-bodyclass='width100'><img src='http://i.giphy.com/XuOOXWY29Y4z6.gif' width='100%'></div>
+
+
+
+<div>Now I take the <strong>time I have left</strong> and do a <em>small rant</em> on <strong>why the heck</strong> we did this and <em>what the heck</em> comes next.</div>
+
+
+
+<div data-bodyclass='width100'><img src='http://i.giphy.com/NmGbJwLl7Y4lG.gif'>The future: <em>fragmented</em>, <em>malleable</em>, <em>beautiful</em>, <em>self-directed</em>.</div>
+<div>Go <em>wide</em> with me for a second. <strong>Why</strong> do we make maps?</div>
+
+<div>We <strong>make maps</strong> to <em>solve problems</em>.</div>
+<div>Think about the <em>types of questions</em> you ask. Are they more focused on the <strong>problem</strong> you're trying to solve, or the <em>technology</em> you're using to solve it?</div>
+<div>We all live within the <strong>constraints</strong> of what we <em>know to be possible</em>. What would it be like to live <strong>outside</strong> of those constraints?</div>
+<div data-bodyclass='width100'><img src='http://i.giphy.com/H2ZHF0zIrCJLG.gif'><em>This is the power of GL.</em></div>
+<div>For realsies, no joke: <em>we are inventing the future</em>.</div>
+<div>That's the whole <strong>open source thing</strong> right? <em>Sure.</em></div>
+<div>But this is <strong>more</strong> than that. We can make <em>so many more choices</em>, from <strong>cartography</strong> to <em>data analysis techniques</em> to <strong>presentation</strong>.</div>
+<div>We are making tools <em>malleable</em> and <em>fragmented</em> and <em>open source</em> and we can all <strong>contribute</strong> and <strong>drive</strong> how this thing happens.</div>
+<div>The <em>more</em> people use the new technology, the <em>more</em> we ask <strong>real questions</strong> and solve <strong>real problems</strong>.</div>
+<div>I believe in you! You are going to make <strong>amazing things</strong>.</div>
+<div>Remember:<br><img src='https://40.media.tumblr.com/a53a71e10ea4a8bf2b41b79f2b404c7c/tumblr_n4ymiyJJaB1rc2qogo1_500.jpg'></div>
+<div data-bodyclass='width100'><img src='http://i.giphy.com/Wk93QyOjP0hXy.gif'>Thanks!</div>
+<div><em>Slides:</em> <a href='http://lyzidiamond.com/wtfgl'>lyzidiamond.com /wtfgl</a><br><strong>Twitter:</strong> <a href='https://twitter.com/lyzidiamond'>@lyzidiamond</a><br>Email: <em>lyzi@mapbox.com</em></div>
+
+
+
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-47757349-1', 'lyzidiamond.com');
+  ga('send', 'pageview');
+</script>
+
+</body>
+</html>
